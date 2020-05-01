@@ -24,29 +24,37 @@ class PesquisaMainState extends State<PesquisaMain>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Pesquisa"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CardPergunta(
-              pergunta: "Teste",
-              respostas: respostas,
-              perguntaAnterior: null,
-              proxPergunta: null,
-            )
-          ],
-        ),
-      ),
+    return CardPergunta(
+      pergunta: "Teste",
+      respostas: respostas,
+      perguntaAnterior: null,
+      proxPergunta: null,
     );
+
+
+    //Scaffold(
+      //appBar: AppBar(
+        //title: Text("Pesquisa"),
+      //),
+      //body: Center(
+        //child: Column(
+          //mainAxisAlignment: MainAxisAlignment.center,
+          //children: <Widget>[
+            //CardPergunta(
+              //pergunta: "Teste",
+              //respostas: respostas,
+              //perguntaAnterior: null,
+             // proxPergunta: null,
+           // )
+         // ],
+       // ),
+      //),
+   // );
   }
 }
 
 
-class CardPergunta extends StatelessWidget{
+class CardPergunta extends StatefulWidget{
 
   CardPergunta({
     Key key, 
@@ -61,6 +69,41 @@ class CardPergunta extends StatelessWidget{
     final CardPergunta proxPergunta;
     final CardPergunta perguntaAnterior;
 
+
+  @override
+  CardPerguntaState createState() => CardPerguntaState();
+}
+  
+class CardPerguntaState extends State<CardPergunta>{
+
+  Widget bottom1;
+  Widget bottom2;
+    
+  @override
+  void initState() {
+    super.initState();
+
+    if(widget.perguntaAnterior != null){
+      bottom1 = new CardChangePage(
+        pagina: widget.perguntaAnterior,
+        texto: "Voltar",
+        icon: Icons.arrow_back,
+      );
+    }
+    else
+      bottom1 = new EmptyWidget();
+
+    if(widget.proxPergunta != null){
+      bottom2 = new CardChangePage(
+        pagina: widget.proxPergunta,
+        texto: "Pular",
+        icon: Icons.arrow_forward,
+      );
+    }
+    else
+      bottom2 = new EmptyWidget();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,16 +114,16 @@ class CardPergunta extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Texto(texto: pergunta,),
-            Spacer(),
+            Texto(texto: widget.pergunta,),
+            //Spacer(),
             Expanded(
               child: ListView.builder(
-                itemCount: respostas.length,
+                itemCount: widget.respostas.length,
                 itemBuilder: (context, index) {
-                  final item = respostas[index];
+                  final item = widget.respostas[index];
                   return CardResposta(
                     resposta: item,
-                    proxPergunta: proxPergunta,
+                    proxPergunta: widget.proxPergunta,
                   );
                 },
               ),
@@ -90,17 +133,9 @@ class CardPergunta extends StatelessWidget{
       ),
       bottomNavigationBar: Row(
         children: <Widget>[
-          CardChangePage(
-            pagina: perguntaAnterior,
-            texto: "Voltar",
-            icon: Icons.arrow_back,
-          ),
+          bottom1,
           Spacer(),
-          CardChangePage(
-            pagina: proxPergunta,
-            texto: "Pular",
-            icon: Icons.arrow_forward,
-          ),
+          bottom2
         ],
       ),
     );
@@ -127,7 +162,7 @@ class Texto extends StatelessWidget{
   }
 }
 
-class CardResposta extends StatelessWidget{
+class CardResposta extends StatefulWidget{
 
   CardResposta({
     Key key, 
@@ -139,21 +174,54 @@ class CardResposta extends StatelessWidget{
     final CardPergunta proxPergunta;
 
   @override
+  CardRespostaState createState() => CardRespostaState();
+
+}
+
+class CardRespostaState extends State<CardResposta>{
+//https://stackoverflow.com/questions/45153204/how-can-i-handle-a-list-of-checkboxes-dynamically-created-in-flutter
+  IconData iconData = Icons.check_box_outline_blank;
+  Icon icon = Icon(Icons.check_box_outline_blank);
+
+  @override
+  void initState() {
+    super.initState();
+    iconData = Icons.check_box_outline_blank;
+  }
+
+  void changeIcon(){
+    setState((){
+      if(iconData == Icons.check_box_outline_blank)
+        iconData = Icons.check_box;
+      else
+        iconData = Icons.check_box;
+      icon = new Icon(iconData);
+    }
+    );    
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return new Container(
-      height: 100,
-      child: Card(
-        color: Colors.white70,
-        child: Center(
-          child: ListTile(
-            title: Texto(texto: resposta,),
-            onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => proxPergunta),
-            );
-          },
-          ),
+    return new GestureDetector(
+      onDoubleTap: (){
+          Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => widget.proxPergunta),
+        );
+      },
+      onTap: (){
+        changeIcon();
+      },
+      child: Container(
+        height: 100,
+        child: Card(
+          color: Colors.white70,
+          child: Center(
+            child: ListTile(
+              leading: Icon(Icons.check_box_outline_blank),//icon,
+              title: Texto(texto: widget.resposta,),
+            ),
+          )
         )
       )
     );
@@ -176,23 +244,36 @@ class CardChangePage extends StatelessWidget{
     
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      height: 30,
-      child: Card(
-        color: Colors.yellow[50],
-        child: Center(
-          child: ListTile(
-            leading: Icon(icon),
-            title: Texto(texto: texto,),
-            onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => pagina),
-            );
-          },
-          ),
+    return new Expanded(
+      child: Container(
+        height: 30,
+        child: Card(
+          color: Colors.yellow[50],
+          child: Center(
+            child: ListTile(
+              leading: Icon(icon),
+              title: Texto(texto: texto,),
+              onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => pagina),
+              );
+            },
+            ),
+          )
         )
       )
+    );
+  }
+}
+
+
+class EmptyWidget extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 0,
     );
   }
 }

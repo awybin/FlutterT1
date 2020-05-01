@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_t1/graficos.dart';
 import 'package:flutter_t1/pesquisa.dart';
+import 'package:flutter_t1/testPesquisa.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,77 +30,43 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+int _selectedIndex = 0;
+static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+static List<Widget> _widgetOptions = <Widget>[
+  GraficosMain(),
+  App(),
+];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            new CardMenu(
-              color: Colors.blue,
-              title: "Pesquisa",
-              icon: Icons.search,
-              nextScreen: PesquisaMain(),
-            ),
-            new CardMenu(
-              color: Colors.blue,
-              title: "Graficos",
-              icon: Icons.graphic_eq,
-              nextScreen: GraficosMain(),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+void _onItemTapped(int index) {
+  setState(() {
+    _selectedIndex = index;
+  });
 }
 
-
-class CardMenu extends StatelessWidget{
-
-  CardMenu({
-    Key key, 
-    String this.title,
-    IconData this.icon,
-    MaterialColor this.color,
-    Widget this.nextScreen,
-  }) : super(key: key);
-
-  final String title;
-  final IconData icon;
-  final MaterialColor color;
-  final Widget nextScreen;
-  
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      height: 100,
-      child: Card(
-        color: color,
-        child: Center(
-          child: ListTile(
-            leading: Icon(icon),
-            title: Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => nextScreen),
-            );
-          },
-          ),
-        )
-      )
-    );
-  }
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('BottomNavigationBar Sample'),
+    ),
+    body: Center(
+      child: _widgetOptions.elementAt(_selectedIndex),
+    ),
+    bottomNavigationBar: BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.graphic_eq),
+          title: Text('Graficos'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          title: Text('Responder Pesquisa'),
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.amber[800],
+      onTap: _onItemTapped,
+    ),
+  );
+}
 }

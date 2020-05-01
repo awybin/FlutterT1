@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_t1/last_page.dart';
 
 class App extends StatelessWidget {
   @override
@@ -29,10 +28,7 @@ class SplashScreenState extends State<SplashScreen>
   AnimationController _longPressController;
   AnimationController _secondStepController;
   AnimationController _thirdStepController;
-  AnimationController _fourStepController;
 
-  double overall = 3.0;
-  String overallStatus = "Good";
   int curIndex = 0;
   String usingTimes = 'Daily';
 
@@ -40,14 +36,6 @@ class SplashScreenState extends State<SplashScreen>
   bool isClear = false;
   bool isEasy = false;
   bool isFriendly = false;
-
-  List<SecondQuestion> usingCollection = [
-    SecondQuestion('daily', 'Daily'),
-    SecondQuestion('onceAWeek', 'Once a week'),
-    SecondQuestion('onceAMonth', 'Once a month'),
-    SecondQuestion('everyMoths', 'Every 2-3 months'),
-    SecondQuestion('lessThanYears', 'Less than 5 a years'),
-  ];
 
   List<Resposta> respostas = [
     Resposta(0, 'Daily'),
@@ -75,20 +63,9 @@ class SplashScreenState extends State<SplashScreen>
         duration: Duration(milliseconds: 1000), vsync: this);
     _thirdStepController = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
-    _fourStepController = AnimationController(
-        duration: Duration(milliseconds: 1000), vsync: this);
     longPressAnimation =
         Tween<double>(begin: 1.0, end: 2.0).animate(CurvedAnimation(
             parent: _longPressController,
-            curve: Interval(
-              0.1,
-              1.0,
-              curve: Curves.fastOutSlowIn,
-            )));
-
-    fourTranformAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-            parent: _fourStepController,
             curve: Interval(
               0.1,
               1.0,
@@ -124,10 +101,6 @@ class SplashScreenState extends State<SplashScreen>
     _thirdStepController.addListener(() {
       setState(() {});
     });
-
-    _fourStepController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -136,7 +109,6 @@ class SplashScreenState extends State<SplashScreen>
     _animateController.dispose();
     _secondStepController.dispose();
     _thirdStepController.dispose();
-    _fourStepController.dispose();
     _longPressController.dispose();
     super.dispose();
   }
@@ -199,14 +171,12 @@ class SplashScreenState extends State<SplashScreen>
                   setState(() {
                     curIndex += 1;
                     if (curIndex == 1) {
-                      _startSecondStepAnimation();
+                      _startThirdStepAnimation();
                     } else if (curIndex == 2) {
-                      _startSecondStepAnimation();
+                      _startThirdStepAnimation();
                     } else if (curIndex == 3) {
-                      _startThirdStepAnimation();
+                      _startSecondStepAnimation();
                     } else if (curIndex == 4) {
-                      _startThirdStepAnimation();
-                    }else if (curIndex == 5) {
                       _startSecondStepAnimation();
                     }
                   });
@@ -249,64 +219,19 @@ class SplashScreenState extends State<SplashScreen>
           ),
         ),
         curIndex == 0
-            ? PerguntaSingle(pergunta: "AAAA", respostas: respostas, animation: secondTranformAnimation,)
+            ? PerguntaSingle(tituloPergunta: "Pergunta 1" ,pergunta: "AAAA", respostas: respostas, animation: secondTranformAnimation,)
             : curIndex == 1
-                ? PerguntaSingle(pergunta: "AAAA", respostas: respostas, animation: secondTranformAnimation,)
-                : curIndex == 2 
-                  ? PerguntaSingle(pergunta: "AAAA", respostas: respostas, animation: secondTranformAnimation,)
-                  : curIndex == 3 
-                    ? PerguntaSingle(pergunta: "AAAA", respostas: respostas, animation: secondTranformAnimation,)
-                    : curIndex == 4 
-                      ? _getSecondStep()  : _getFirstStep(),
+              ? PerguntaMult(tituloPergunta: "Pergunta 2" ,pergunta: "AAAA", respostas: respostas, animation: thirdTranformAnimation,)
+              : curIndex == 2 
+              ? PerguntaMult(tituloPergunta: "Pergunta 3" ,pergunta: "AAAA", respostas: respostas, animation: thirdTranformAnimation,)
+                : curIndex == 3 
+                ? PerguntaSingle(tituloPergunta: "Pergunta 4" ,pergunta: "AAAA", respostas: respostas, animation: secondTranformAnimation,)
+                  : PerguntaSingle(tituloPergunta: "Pergunta 5" ,pergunta: "AAAA", respostas: respostas, animation: secondTranformAnimation,)
       ],
     );
   }
 
-  Widget _getFirstStep() {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.only(top: 34.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text('Question 1'),
-            Container(
-                margin: EdgeInsets.only(top: 16.0),
-                child: Text('Overall, how would you rate our service?')),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 50.0),
-              child: Text(
-                overallStatus,
-                style: TextStyle(
-                    color: Colors.orangeAccent,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30.0),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: Slider(
-                  value: overall,
-                  onChanged: (value) {
-                    setState(() {
-                      overall = value.round().toDouble();
-                      _getOverallStatus(overall);
-                    });
-                  },
-                  label: '${overall.toInt()}',
-                  divisions: 30,
-                  min: 1.0,
-                  max: 5.0,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
+  /*
   Widget _getSecondStep() {
     return Expanded(
       child: Container(
@@ -464,185 +389,7 @@ class SplashScreenState extends State<SplashScreen>
       ),
     );
   }
-
-  Widget _getFourStep() {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.only(top: 34.0),
-        child: Transform(
-          transform: new Matrix4.translationValues(
-              0.0, 50.0 * (1.0 - fourTranformAnimation.value), 0.0),
-          child: Opacity(
-            opacity: fourTranformAnimation.value,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text('Question 4'),
-                Container(
-                    margin: EdgeInsets.only(top: 16.0),
-                    child: Text(
-                        'When you need help or has concerns related with our product, how satisfied are you with our customer support\'s performance?')),
-                Expanded(
-                  child: Center(
-                    child: Container(
-                      height: 213.0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            height: 150.0,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    GestureDetector(
-//                              onTapU
-//                        onLongPress: () {
-//                          _startLongPressAnimation();
-//                          },
-//                                onTapUp: (detail) {
-//                          print(detail);
-//                         _longPressController.reset();
-//                      },
-                                      onTapUp: (detail) {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        LastPage(
-                                                          statusType: 'Unhappy',
-                                                        )));
-                                      },
-                                      child: Transform.scale(
-                                          scale: longPressAnimation.value,
-                                          child: Hero(
-                                            tag: 'Unhappy',
-                                            child: Image.asset(
-                                              'images/angry.gif',
-                                              width: 50.0,
-                                              height: 50.0,
-                                            ),
-                                          )),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text('Unhappy'),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    GestureDetector(
-//                              onTapU
-//                        onLongPress: () {
-//                          _startLongPressAnimation();
-//                          },
-//                                onTapUp: (detail) {
-//                          print(detail);
-//                         _longPressController.reset();
-//                      },
-                                      onTapUp: (detail) {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        LastPage(
-                                                          statusType: 'Neutral',
-                                                        )));
-                                      },
-                                      child: Hero(
-                                        tag: 'Neutral',
-                                        child: Transform.scale(
-                                            scale: longPressAnimation.value,
-                                            child: Image.asset(
-                                              'images/mmm.gif',
-                                              width: 50.0,
-                                              height: 50.0,
-                                            )),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text('Neutral'),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    GestureDetector(
-//                              onTapU
-//                        onLongPress: () {
-//                          _startLongPressAnimation();
-//                          },
-//                                onTapUp: (detail) {
-//                          print(detail);
-//                         _longPressController.reset();
-//                      },
-                                      onTapUp: (detail) {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        LastPage(
-                                                          statusType:
-                                                              'Satisfied',
-                                                        )));
-                                      },
-                                      child: Transform.scale(
-                                          scale: longPressAnimation.value,
-                                          child: Hero(
-                                            tag: 'Satisfied',
-                                            child: Image.asset(
-                                              'images/hearteyes.gif',
-                                              width: 50.0,
-                                              height: 50.0,
-                                            ),
-                                          )),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text('Satisfied'),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  _getOverallStatus(double overall) {
-    switch (overall.toInt()) {
-      case 1:
-        overallStatus = 'Bad';
-        break;
-      case 2:
-        overallStatus = 'Normal';
-        break;
-      case 3:
-        overallStatus = 'Good';
-        break;
-      case 4:
-        overallStatus = 'Very Good';
-        break;
-      default:
-        overallStatus = 'Excellent';
-        break;
-    }
-  }
+  */
 }
 
 class AnimationBox extends StatelessWidget {
@@ -906,20 +653,6 @@ class AnimationBox extends StatelessWidget {
   }
 }
 
-class SecondQuestion {
-  final String identifier;
-  final String displayContent;
-
-  SecondQuestion(this.identifier, this.displayContent);
-}
-
-class ThirdQuestion {
-  final String displayContent;
-  bool isSelected;
-
-  ThirdQuestion(this.displayContent, this.isSelected);
-}
-
 class Resposta {
 
   Resposta(
@@ -935,11 +668,13 @@ class PerguntaSingle extends StatefulWidget{
   
   PerguntaSingle({
     Key key, 
+    this.tituloPergunta,
     this.pergunta,
     this.respostas,
     this.animation,
   }) : super(key: key);
   
+    final String tituloPergunta;
     final String pergunta;
     final List<Resposta> respostas;
     final Animation<double> animation;
@@ -960,76 +695,195 @@ class PerguntaSingleState extends State<PerguntaSingle>{
   
   @override
   Widget build(BuildContext context) {
+    return new PerguntaConstructor(
+      tituloPergunta: widget.tituloPergunta,
+      pergunta: widget.pergunta,
+      respostas: widget.respostas,
+      animation: widget.animation,
+      conteudo: ListView.builder(
+        itemCount: widget.respostas.length,
+        padding: const EdgeInsets.all(0.0),
+        itemBuilder: (context, index) {
+          final resposta = widget.respostas[index];
+          return GestureDetector(
+            onTapUp: (detail) {
+              setState(() {
+                selecionado = resposta.chave;
+              });
+            },
+            child: Container(
+              height: 50.0,
+              color: selecionado == resposta.chave
+                ? Colors.orangeAccent.withAlpha(100)
+                : Colors.white,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Radio(
+                        activeColor: Colors.orangeAccent,
+                        value: resposta.chave,
+                        groupValue: selecionado,
+                        onChanged: (int value) {
+                          setState(() {
+                            selecionado = value;
+                          });
+                        }
+                      ),
+                      Text(resposta.texto)
+                    ],
+                  ),
+                  Divider(
+                    height: index < widget.respostas.length
+                      ? 1.0
+                      : 0.0,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      )
+    );
+  }
+}
+
+
+class PerguntaMult extends StatefulWidget{
+  
+  PerguntaMult({
+    Key key, 
+    this.tituloPergunta,
+    this.pergunta,
+    this.respostas,
+    this.animation,
+  }) : super(key: key);
+  
+    final String tituloPergunta;
+    final String pergunta;
+    final List<Resposta> respostas;
+    final Animation<double> animation;
+
+  @override
+  PerguntaMultState createState() => PerguntaMultState();
+}
+
+class PerguntaMultState extends State<PerguntaMult>{
+  
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+  List<int> selecionado = new List<int>();
+  
+  @override
+  Widget build(BuildContext context) {
+    return new PerguntaConstructor(
+      tituloPergunta: widget.tituloPergunta,
+      pergunta: widget.pergunta,
+      respostas: widget.respostas,
+      animation: widget.animation,
+      conteudo: ListView.builder(
+        itemCount: widget.respostas.length,
+        padding: const EdgeInsets.all(0.0),
+        itemBuilder: (context, index) {
+          final resposta = widget.respostas[index];
+          return GestureDetector(
+            onTapUp: (detail) {
+              setState(() {
+                if(selecionado.contains(resposta.chave))
+                  selecionado.remove(resposta.chave);
+                else
+                  selecionado.add(resposta.chave);
+              });
+            },
+            child: Container(
+              height: 50.0,
+              color: selecionado.contains(resposta.chave)
+                ? Colors.orangeAccent.withAlpha(100)
+                : Colors.white,
+              child: Row(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Checkbox(
+                        activeColor: Colors.orangeAccent,
+                        value: selecionado.contains(resposta.chave),
+                        onChanged: (bool value) {
+                          setState(() {
+                            if(selecionado.contains(resposta.chave))
+                            selecionado.remove(resposta.chave);
+                            else
+                            selecionado.add(resposta.chave);
+                          });
+                        }
+                      ),
+                      Text(resposta.texto)
+                    ],
+                  ),
+                  Divider(
+                    height: index < widget.respostas.length
+                      ? 1.0
+                      : 0.0,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      )
+    );
+  }
+}
+
+class PerguntaConstructor extends StatelessWidget{
+  
+  PerguntaConstructor({
+    Key key, 
+    this.tituloPergunta,
+    this.pergunta,
+    this.respostas,
+    this.animation,
+    this.conteudo,
+  }) : super(key: key);
+  
+    final String tituloPergunta;
+    final String pergunta;
+    final List<Resposta> respostas;
+    final Animation<double> animation;
+    final Widget conteudo;
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         margin: EdgeInsets.only(top: 34.0),
         child: Transform(
           transform: new Matrix4.translationValues(
-            0.0, 50.0 * (1.0 - widget.animation.value), 0.0
+            0.0, 50.0 * (1.0 - animation.value), 0.0
           ),
           child: Opacity(
-            opacity: widget.animation.value,
+            opacity: animation.value,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text('Question 2'),
+                Text(tituloPergunta),
                 Container(
                   margin: EdgeInsets.only(top: 16.0, bottom: 0),
-                  child: Text(widget.pergunta)
+                  child: Text(pergunta)
                 ),
                 Expanded(
                   child: Center(
                     child: Container(
-                      height: widget.respostas.length * 50.0 + 5,
+                      height: respostas.length * 50.0 + 5,
                       child: Card(
-                        child: ListView.builder(
-                          itemCount: widget.respostas.length,
-                          padding: const EdgeInsets.all(0.0),
-                          itemBuilder: (context, index) {
-                            final resposta = widget.respostas[index];
-                            return GestureDetector(
-                              onTapUp: (detail) {
-                                setState(() {
-                                  selecionado = resposta.chave;
-                                });
-                              },
-                              child: Container(
-                                height: 50.0,
-                                color: selecionado == resposta.chave
-                                  ? Colors.orangeAccent.withAlpha(100)
-                                  : Colors.white,
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Radio(
-                                          activeColor: Colors.orangeAccent,
-                                          value: resposta.chave,
-                                          groupValue: selecionado,
-                                          onChanged: (int value) {
-                                            setState(() {
-                                              selecionado = value;
-                                            });
-                                          }
-                                        ),
-                                        Text(resposta.texto)
-                                      ],
-                                    ),
-                                    Divider(
-                                      height: index < widget.respostas.length
-                                        ? 1.0
-                                        : 0.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                        child: conteudo
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

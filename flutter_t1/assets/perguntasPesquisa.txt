@@ -1,0 +1,36 @@
+Você teve febre nos ultimos 10 dias (Temperatura igual ou superior a 38º)?
+	Sim
+	Não
+	
+Apresentou algum desses sintomas? (multiselect)
+	Tosse,
+	Dor de garganta
+	Coriza/Nariz Entupido
+	Dores no corpo/mialgia
+	Náuseas/Vomitos
+	Diarreia
+	Perda de Olfato (cheiro) e/ ou paladar (gosto)
+	Falta de ar / Dificuldade de respirar
+	Nenhum dos anteriores (desmarca td)
+	
+É portador de alguma doença crônica? (multiselect)
+	Doença cardiovascular
+	Doença pulmonar
+	Diabetes
+	Obesidade
+	Cirrose
+	Neoplasia em tratamento
+	Insuficiência renal
+	Hepatopatia
+	Transplantados
+	Faz uso de algum tratamento imunosupressor
+	Nenhum dos anteriores (desmarca td)
+	
+Teve contato com algum caso suspeito ou confirmado de COVID-19 no Domicilio?
+	Sim
+	Não
+	
+Você é profissional de saúde?
+	Sim
+	Não
+	

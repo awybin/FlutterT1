@@ -5,9 +5,9 @@ Você teve febre nos ultimos 10 dias (Temperatura igual ou superior a 38º)?
 Apresentou algum desses sintomas? (multiselect)
 	Tosse,
 	Dor de garganta
-	Coriza/Nariz Entupido
+	Coriza/ Nariz Entupido
 	Dores no corpo/mialgia
-	Náuseas/Vomitos
+	Náuseas/ Vomitos
 	Diarreia
 	Perda de Olfato (cheiro) e/ ou paladar (gosto)
 	Falta de ar / Dificuldade de respirar

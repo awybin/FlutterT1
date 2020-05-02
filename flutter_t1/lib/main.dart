@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_t1/graficos.dart';
 import 'package:flutter_t1/pesquisa.dart';
-import 'package:flutter_t1/testPesquisa.dart';
 
 void main() => runApp(MyApp());
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_t1/color_palette.dart';
 import 'package:flutter_t1/graficos.dart';
+import 'package:flutter_t1/introducao.dart';
 import 'package:flutter_t1/pesquisa.dart';
 
 void main() => runApp(MyApp());
@@ -10,11 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Coronations',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: IntroductionPage(),
     );
   }
 }
@@ -33,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    GraficosMain(),
+    GraphsView(),
     App(),
   ];
 
@@ -53,11 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.graphic_eq),
-            title: Text('Graficos'),
+            title: Text('Estatísticas'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Responder Pesquisa'),
+            title: Text('Pesquisa'),
           ),
         ],
         currentIndex: _selectedIndex,

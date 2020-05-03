@@ -1,9 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_t1/Model/corona_summary.dart';
+import 'package:flutter_t1/repository/corona_repository.dart';
+import 'package:intl/intl.dart';
 
 import 'color_palette.dart';
 
-class GraficosMain extends StatelessWidget {
+class GraphsView extends StatefulWidget {
+  @override
+  _GraphsViewState createState() => _GraphsViewState();
+}
+
+class _GraphsViewState extends State<GraphsView> {
+  Future<CoronaSummary> summary;
+
+  @override
+  void initState() {
+    super.initState();
+    summary = CoronaRepository.fetchAlbum();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +41,7 @@ class GraficosMain extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.0),
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
                       width: MediaQuery.of(context).size.width,
                       child: FlatButton(
                         padding: EdgeInsets.all(10.0),
@@ -54,13 +70,37 @@ class GraficosMain extends StatelessWidget {
                         },
                       ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        CasesCounter(type: 'recovered', cases: 35935),
-                        CasesCounter(type: 'active', cases: 45412),
-                        CasesCounter(type: 'fatal', cases: 6017)
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    Text(
+                      'Estatísticas',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: FutureBuilder<CoronaSummary>(
+                        future: summary,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            CountrySummary countryData =
+                                CoronaRepository.getSummaryFor(
+                                    snapshot.data, 'Brazil');
+                            return Row(
+                              children: <Widget>[
+                                CasesCounter(
+                                    type: 'recovered',
+                                    cases: countryData.totalRecovered),
+                                CasesCounter(
+                                    type: 'active',
+                                    cases: countryData.totalConfirmed),
+                                CasesCounter(
+                                    type: 'fatal',
+                                    cases: countryData.totalDeaths),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            );
+                          }
+                          return CircularProgressIndicator();
+                        },
+                      ),
                     )
                   ],
                 ),
@@ -91,6 +131,8 @@ class CasesCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var fmt = NumberFormat.compact();
+
     return Column(
       children: <Widget>[
         Image(
@@ -99,7 +141,7 @@ class CasesCounter extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
-            this.cases.toString(),
+            fmt.format(this.cases),
             style: TextStyle(fontSize: 18),
           ),
         ),

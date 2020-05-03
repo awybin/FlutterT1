@@ -7,9 +7,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.orangeAccent),
-      home: SplashScreen(),
+    return Scaffold(
+      body: SplashScreen(),
     );
   }
 }
@@ -32,29 +31,36 @@ class SplashScreenState extends State<SplashScreen>
 
   List<Pergunta> perguntas = [
     Pergunta(
-      "Você teve febre nos ultimos 10 dias (Temperatura igual ou superior a 38º)?",
-      ["Sim", "Não" ]
-    ),
+        "Você teve febre nos ultimos 10 dias (Temperatura igual ou superior a 38º)?",
+        ["Sim", "Não"]),
+    Pergunta("Apresentou algum desses sintomas?", [
+      "Tosse",
+      "Dor de garganta",
+      "Coriza/ Nariz Entupido",
+      "Dores no corpo/mialgia",
+      "Náuseas/ Vomitos",
+      "Diarreia",
+      "Perda de Olfato (cheiro) e/ ou paladar (gosto)",
+      "Falta de ar / Dificuldade de respirar",
+      "Nenhum dos anteriores"
+    ]),
+    Pergunta("É portador de alguma doença crônica?", [
+      "Doença cardiovascular",
+      "Doença pulmonar",
+      "Diabetes",
+      "Obesidade",
+      "Cirrose",
+      "Neoplasia em tratamento",
+      "Insuficiência renal",
+      "Hepatopatia",
+      "Transplantados",
+      "Faz uso de algum tratamento imunosupressor",
+      "Nenhum dos anteriores"
+    ]),
     Pergunta(
-      "Apresentou algum desses sintomas?",
-      ["Tosse", "Dor de garganta", "Coriza/ Nariz Entupido", "Dores no corpo/mialgia", "Náuseas/ Vomitos", 
-      "Diarreia", "Perda de Olfato (cheiro) e/ ou paladar (gosto)", "Falta de ar / Dificuldade de respirar", 
-      "Nenhum dos anteriores"]
-    ),
-    Pergunta(
-      "É portador de alguma doença crônica?",
-      ["Doença cardiovascular", "Doença pulmonar", "Diabetes", "Obesidade", "Cirrose", "Neoplasia em tratamento", 
-      "Insuficiência renal", "Hepatopatia", "Transplantados", "Faz uso de algum tratamento imunosupressor", 
-      "Nenhum dos anteriores"]
-    ),
-    Pergunta(
-      "Teve contato com algum caso suspeito ou confirmado de COVID-19 no Domicilio?",
-      ["Sim", "Não" ]
-    ),
-    Pergunta(
-      "Você é profissional de saúde?",
-      ["Sim", "Não" ]
-    )
+        "Teve contato com algum caso suspeito ou confirmado de COVID-19 no Domicilio?",
+        ["Sim", "Não"]),
+    Pergunta("Você é profissional de saúde?", ["Sim", "Não"])
   ];
 
   Animation<double> perguntaSingleAnimation;
@@ -93,7 +99,7 @@ class SplashScreenState extends State<SplashScreen>
     _firstAnimationController.addListener(() {
       setState(() {});
     });
-    
+
     _perguntaSingleController.addListener(() {
       setState(() {});
     });
@@ -222,26 +228,52 @@ class SplashScreenState extends State<SplashScreen>
           ),
         ),
         curIndex == 0
-            ? new PerguntaSingle(tituloPergunta: "Pergunta 1" ,pergunta: perguntas[0].pergunta, respostas: perguntas[0].respostas, animation: _firstAnimationController,)
+            ? new PerguntaSingle(
+                tituloPergunta: "Pergunta 1",
+                pergunta: perguntas[0].pergunta,
+                respostas: perguntas[0].respostas,
+                animation: _firstAnimationController,
+              )
             : curIndex == 1
-              ? new PerguntaMult(tituloPergunta: "Pergunta 2" ,pergunta: perguntas[1].pergunta, respostas: perguntas[1].respostas, animation: perguntaMultAnimation,)
-              : curIndex == 2 
-              ? new PerguntaMult(tituloPergunta: "Pergunta 3" ,pergunta: perguntas[2].pergunta, respostas: perguntas[2].respostas, animation: perguntaMultAnimation,)
-                : curIndex == 3 
-                ? new PerguntaSingle(tituloPergunta: "Pergunta 4" ,pergunta: perguntas[3].pergunta, respostas: perguntas[3].respostas, animation: perguntaSingleAnimation,)
-                  : new PerguntaSingle(tituloPergunta: "Pergunta 5" ,pergunta: perguntas[4].pergunta, respostas: perguntas[4].respostas, animation: perguntaSingleAnimation,)
+                ? new PerguntaMult(
+                    tituloPergunta: "Pergunta 2",
+                    pergunta: perguntas[1].pergunta,
+                    respostas: perguntas[1].respostas,
+                    animation: perguntaMultAnimation,
+                  )
+                : curIndex == 2
+                    ? new PerguntaMult(
+                        tituloPergunta: "Pergunta 3",
+                        pergunta: perguntas[2].pergunta,
+                        respostas: perguntas[2].respostas,
+                        animation: perguntaMultAnimation,
+                      )
+                    : curIndex == 3
+                        ? new PerguntaSingle(
+                            tituloPergunta: "Pergunta 4",
+                            pergunta: perguntas[3].pergunta,
+                            respostas: perguntas[3].respostas,
+                            animation: perguntaSingleAnimation,
+                          )
+                        : new PerguntaSingle(
+                            tituloPergunta: "Pergunta 5",
+                            pergunta: perguntas[4].pergunta,
+                            respostas: perguntas[4].respostas,
+                            animation: perguntaSingleAnimation,
+                          )
       ],
     );
   }
-
 }
 
 class AnimationBox extends StatelessWidget {
-  AnimationBox(
-      {Key key, this.controller, this.screenWidth, this.onStartAnimation, this.primeiraPergunta,
-
-      })
-      : width = Tween<double>(
+  AnimationBox({
+    Key key,
+    this.controller,
+    this.screenWidth,
+    this.onStartAnimation,
+    this.primeiraPergunta,
+  })  : width = Tween<double>(
           begin: screenWidth,
           end: 40.0,
         ).animate(
@@ -407,7 +439,7 @@ class AnimationBox extends StatelessWidget {
                   Expanded(
                       child: Center(
                           child: FlutterLogo(
-                            colors: Colors.orange,
+                    colors: Colors.orange,
                     size: 100.0,
                   ))),
                   Text(
@@ -470,22 +502,21 @@ class AnimationBox extends StatelessWidget {
   }
 }
 
-class PerguntaSingle extends StatefulWidget{
-  
+class PerguntaSingle extends StatefulWidget {
   PerguntaSingle({
-    Key key, 
+    Key key,
     this.tituloPergunta,
     this.pergunta,
     this.respostas,
     this.animation,
     this.animationGetValue,
   }) : super(key: key);
-  
-    final String tituloPergunta;
-    final String pergunta;
-    final List<String> respostas;
-    final Animation<double> animation;
-    final Animation<double> animationGetValue;
+
+  final String tituloPergunta;
+  final String pergunta;
+  final List<String> respostas;
+  final Animation<double> animation;
+  final Animation<double> animationGetValue;
 
   int selecionado = -1;
 
@@ -493,87 +524,81 @@ class PerguntaSingle extends StatefulWidget{
   PerguntaSingleState createState() => PerguntaSingleState();
 }
 
-class PerguntaSingleState extends State<PerguntaSingle>{
-  
+class PerguntaSingleState extends State<PerguntaSingle> {
   @override
   void initState() {
     super.initState();
   }
 
   int selecionado;
-  
+
   @override
   Widget build(BuildContext context) {
     return new PerguntaConstructor(
-      tituloPergunta: widget.tituloPergunta,
-      pergunta: widget.pergunta,
-      respostas: widget.respostas,
-      animation: widget.animation,
-      animationGetValue: widget.animationGetValue,
-      conteudo: ListView.builder(
-        itemCount: widget.respostas.length,
-        padding: const EdgeInsets.all(0.0),
-        itemBuilder: (context, index) {
-          final resposta = widget.respostas[index];
-          return GestureDetector(
-            onTapUp: (detail) {
-              setState(() {
-                selecionado = index;
-              });
-            },
-            child: Container(
-              height: 50.0,
-              color: selecionado == index
-                ? Colors.orangeAccent.withAlpha(100)
-                : Colors.white,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Radio(
-                        activeColor: Colors.orangeAccent,
-                        value: index,
-                        groupValue: selecionado,
-                        onChanged: (int value) {
-                          setState(() {
-                            selecionado = value;
-                          });
-                        }
-                      ),
-                      Text(resposta)
-                    ],
-                  ),
-                  Divider(
-                    height: index < widget.respostas.length
-                      ? 1.0
-                      : 0.0,
-                  ),
-                ],
+        tituloPergunta: widget.tituloPergunta,
+        pergunta: widget.pergunta,
+        respostas: widget.respostas,
+        animation: widget.animation,
+        animationGetValue: widget.animationGetValue,
+        conteudo: ListView.builder(
+          itemCount: widget.respostas.length,
+          padding: const EdgeInsets.all(0.0),
+          itemBuilder: (context, index) {
+            final resposta = widget.respostas[index];
+            return GestureDetector(
+              onTapUp: (detail) {
+                setState(() {
+                  selecionado = index;
+                });
+              },
+              child: Container(
+                height: 50.0,
+                color: selecionado == index
+                    ? Colors.orangeAccent.withAlpha(100)
+                    : Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Radio(
+                            activeColor: Colors.orangeAccent,
+                            value: index,
+                            groupValue: selecionado,
+                            onChanged: (int value) {
+                              setState(() {
+                                selecionado = value;
+                              });
+                            }),
+                        Text(resposta)
+                      ],
+                    ),
+                    Divider(
+                      height: index < widget.respostas.length ? 1.0 : 0.0,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      )
-    );
+            );
+          },
+        ));
   }
 }
 
-class PerguntaMult extends StatefulWidget{
-  
+class PerguntaMult extends StatefulWidget {
   PerguntaMult({
-    Key key, 
+    Key key,
     this.tituloPergunta,
     this.pergunta,
     this.respostas,
     this.animation,
     this.animationGetValue,
   }) : super(key: key);
-  
-    final String tituloPergunta;
-    final String pergunta;
-    final List<String> respostas;
-    final Animation<double> animation;
-    final Animation<double> animationGetValue;
+
+  final String tituloPergunta;
+  final String pergunta;
+  final List<String> respostas;
+  final Animation<double> animation;
+  final Animation<double> animationGetValue;
 
   List<int> selecionado = new List<int>();
 
@@ -581,91 +606,88 @@ class PerguntaMult extends StatefulWidget{
   PerguntaMultState createState() => PerguntaMultState();
 }
 
-class PerguntaMultState extends State<PerguntaMult>{
-  
+class PerguntaMultState extends State<PerguntaMult> {
   @override
   void initState() {
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return new PerguntaConstructor(
-      tituloPergunta: widget.tituloPergunta,
-      pergunta: widget.pergunta,
-      respostas: widget.respostas,
-      animation: widget.animation,
-      conteudo: ListView.builder(
-        itemCount: widget.respostas.length,
-        padding: const EdgeInsets.all(0.0),
-        itemBuilder: (context, index) {
-          final resposta = widget.respostas[index];
-          return GestureDetector(
-            onTapUp: (detail) {
-              setState(() {
-                if(widget.selecionado.contains(index))
-                  widget.selecionado.remove(index);
-                else if(index == widget.respostas.length - 1){
-                  widget.selecionado.removeRange(0, widget.selecionado.length);
-                  widget.selecionado.add(index);
-                }
-                else{
-                  if(widget.selecionado.contains(widget.respostas.length - 1))
-                    widget.selecionado.remove(widget.respostas.length - 1);
-                  widget.selecionado.add(index);
-                }
-              });
-            },
-            child: Container(
-              height: 50.0,
-              color: widget.selecionado.contains(index)
-                ? Colors.orangeAccent.withAlpha(100)
-                : Colors.white,
-              child: Row(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        activeColor: Colors.orangeAccent,
-                        value: widget.selecionado.contains(index),
-                        onChanged: (bool value) {
-                          setState(() {
-                            if(widget.selecionado.contains(index))
-                              widget.selecionado.remove(index);
-                            else if(index == widget.respostas.length - 1){
-                              widget.selecionado.removeRange(0, widget.selecionado.length);
-                              widget.selecionado.add(index);
-                            }
-                            else{
-                              if(widget.selecionado.contains(widget.respostas.length - 1))
-                                widget.selecionado.remove(widget.respostas.length - 1);
-                              widget.selecionado.add(index);
-                            }
-                          });
-                        }
-                      ),
-                      Text(resposta)
-                    ],
-                  ),
-                  Divider(
-                    height: index < widget.respostas.length
-                      ? 1.0
-                      : 0.0,
-                  ),
-                ],
+        tituloPergunta: widget.tituloPergunta,
+        pergunta: widget.pergunta,
+        respostas: widget.respostas,
+        animation: widget.animation,
+        conteudo: ListView.builder(
+          itemCount: widget.respostas.length,
+          padding: const EdgeInsets.all(0.0),
+          itemBuilder: (context, index) {
+            final resposta = widget.respostas[index];
+            return GestureDetector(
+              onTapUp: (detail) {
+                setState(() {
+                  if (widget.selecionado.contains(index))
+                    widget.selecionado.remove(index);
+                  else if (index == widget.respostas.length - 1) {
+                    widget.selecionado
+                        .removeRange(0, widget.selecionado.length);
+                    widget.selecionado.add(index);
+                  } else {
+                    if (widget.selecionado
+                        .contains(widget.respostas.length - 1))
+                      widget.selecionado.remove(widget.respostas.length - 1);
+                    widget.selecionado.add(index);
+                  }
+                });
+              },
+              child: Container(
+                height: 50.0,
+                color: widget.selecionado.contains(index)
+                    ? Colors.orangeAccent.withAlpha(100)
+                    : Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Checkbox(
+                            activeColor: Colors.orangeAccent,
+                            value: widget.selecionado.contains(index),
+                            onChanged: (bool value) {
+                              setState(() {
+                                if (widget.selecionado.contains(index))
+                                  widget.selecionado.remove(index);
+                                else if (index == widget.respostas.length - 1) {
+                                  widget.selecionado.removeRange(
+                                      0, widget.selecionado.length);
+                                  widget.selecionado.add(index);
+                                } else {
+                                  if (widget.selecionado
+                                      .contains(widget.respostas.length - 1))
+                                    widget.selecionado
+                                        .remove(widget.respostas.length - 1);
+                                  widget.selecionado.add(index);
+                                }
+                              });
+                            }),
+                        Text(resposta)
+                      ],
+                    ),
+                    Divider(
+                      height: index < widget.respostas.length ? 1.0 : 0.0,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      )
-    );
+            );
+          },
+        ));
   }
 }
 
-class PerguntaConstructor extends StatelessWidget{
-  
+class PerguntaConstructor extends StatelessWidget {
   PerguntaConstructor({
-    Key key, 
+    Key key,
     this.tituloPergunta,
     this.pergunta,
     this.respostas,
@@ -673,13 +695,13 @@ class PerguntaConstructor extends StatelessWidget{
     this.animationGetValue,
     this.conteudo,
   }) : super(key: key);
-  
-    final String tituloPergunta;
-    final String pergunta;
-    final List<String> respostas;
-    final Animation<double> animation;
-    final Animation<double> animationGetValue;
-    final Widget conteudo;
+
+  final String tituloPergunta;
+  final String pergunta;
+  final List<String> respostas;
+  final Animation<double> animation;
+  final Animation<double> animationGetValue;
+  final Widget conteudo;
 
   @override
   Widget build(BuildContext context) {
@@ -688,8 +710,7 @@ class PerguntaConstructor extends StatelessWidget{
         margin: EdgeInsets.only(top: 34.0),
         child: Transform(
           transform: new Matrix4.translationValues(
-            0.0, 50.0 * (1.0 - animation.value), 0.0
-          ),
+              0.0, 50.0 * (1.0 - animation.value), 0.0),
           child: Opacity(
             opacity: animation.value,
             child: Column(
@@ -697,16 +718,13 @@ class PerguntaConstructor extends StatelessWidget{
               children: <Widget>[
                 Text(tituloPergunta),
                 Container(
-                  margin: EdgeInsets.only(top: 16.0, bottom: 0),
-                  child: Text(pergunta)
-                ),
+                    margin: EdgeInsets.only(top: 16.0, bottom: 0),
+                    child: Text(pergunta)),
                 Expanded(
                   child: Center(
                     child: Container(
                       height: respostas.length * 50.0 + 5,
-                      child: Card(
-                        child: conteudo
-                      ),
+                      child: Card(child: conteudo),
                     ),
                   ),
                 ),
@@ -719,15 +737,9 @@ class PerguntaConstructor extends StatelessWidget{
   }
 }
 
-
 class Pergunta {
-
-  Pergunta(
-    this.pergunta, 
-    this.respostas
-  );
+  Pergunta(this.pergunta, this.respostas);
 
   final String pergunta;
   final List<String> respostas;
-
 }

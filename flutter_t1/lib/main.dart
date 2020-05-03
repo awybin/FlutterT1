@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_t1/color_palette.dart';
 import 'package:flutter_t1/graficos.dart';
 import 'package:flutter_t1/pesquisa.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
@@ -28,44 +29,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static List<Widget> _widgetOptions = <Widget>[
+    GraficosMain(),
+    App(),
+  ];
 
-int _selectedIndex = 0;
-static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-static List<Widget> _widgetOptions = <Widget>[
-  GraficosMain(),
-  App(),
-];
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
-void _onItemTapped(int index) {
-  setState(() {
-    _selectedIndex = index;
-  });
-}
-
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text('BottomNavigationBar Sample'),
-    ),
-    body: Center(
-      child: _widgetOptions.elementAt(_selectedIndex),
-    ),
-    bottomNavigationBar: BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.graphic_eq),
-          title: Text('Graficos'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          title: Text('Responder Pesquisa'),
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
-      onTap: _onItemTapped,
-    ),
-  );
-}
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.graphic_eq),
+            title: Text('Graficos'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            title: Text('Responder Pesquisa'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: ColorPalette.secondaryBlue,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
 }

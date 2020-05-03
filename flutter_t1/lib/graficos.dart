@@ -13,6 +13,8 @@ class GraphsView extends StatefulWidget {
 
 class _GraphsViewState extends State<GraphsView> {
   Future<CoronaSummary> summary;
+  String selectedCountry = 'Brasil';
+  List<String> countryList = CoronaRepository.countryCode.keys.toList();
 
   @override
   void initState() {
@@ -47,7 +49,7 @@ class _GraphsViewState extends State<GraphsView> {
                         padding: EdgeInsets.all(10.0),
                         disabledColor: Colors.blueAccent,
                         child: Text(
-                          'Brasil',
+                          selectedCountry,
                           style: TextStyle(fontSize: 18.0, color: Colors.white),
                         ),
                         color: Colors.blueAccent,
@@ -56,15 +58,21 @@ class _GraphsViewState extends State<GraphsView> {
                         ),
                         onPressed: () {
                           showModalBottomSheet(
+                              isDismissible: true,
                               context: context,
                               builder: (BuildContext builder) {
                                 return CupertinoPicker(
                                   magnification: 1,
                                   itemExtent: 40,
                                   children: <Widget>[
-                                    Center(child: Text('Brasil')),
-                                    Center(child: Text('Estados Unidos'))
+                                    for (var country in countryList)
+                                      Center(child: Text(country))
                                   ],
+                                  onSelectedItemChanged: (index) {
+                                    setState(() {
+                                      selectedCountry = countryList[index];
+                                    });
+                                  },
                                 );
                               });
                         },
@@ -82,7 +90,7 @@ class _GraphsViewState extends State<GraphsView> {
                           if (snapshot.hasData) {
                             CountrySummary countryData =
                                 CoronaRepository.getSummaryFor(
-                                    snapshot.data, 'Brazil');
+                                    snapshot.data, selectedCountry);
                             return Row(
                               children: <Widget>[
                                 CasesCounter(

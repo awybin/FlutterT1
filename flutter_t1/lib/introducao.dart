@@ -38,7 +38,7 @@ class IntroductionPage extends StatelessWidget {
                   padding: EdgeInsets.all(15.0),
                   disabledColor: Colors.blueAccent,
                   child: Text(
-                    'Ótima ideia!',
+                    'Show de bola!',
                     style: TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
                   color: Colors.blueAccent,
@@ -56,22 +56,23 @@ class IntroductionPage extends StatelessWidget {
       ),
     );
   }
-}
 
-Route _createRoute() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => MyHomePage(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      var begin = Offset(0.0, 1.0);
-      var end = Offset.zero;
-      var curve = Curves.ease;
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
 
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
 }

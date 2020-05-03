@@ -4,6 +4,12 @@ import 'package:flutter_t1/Model/corona_summary.dart';
 import 'package:http/http.dart' as http;
 
 class CoronaRepository {
+  static var countryCode = {
+    'Brasil': 'BR',
+    'Estados Unidos': 'US',
+    'Itália': "IT"
+  };
+
   static Future<CoronaSummary> fetchAlbum() async {
     final response = await http.get('https://api.covid19api.com/summary');
 
@@ -19,7 +25,7 @@ class CoronaRepository {
   }
 
   static CountrySummary getSummaryFor(CoronaSummary data, String countryName) {
-    return data.countries
-        .firstWhere((country) => country.country == countryName);
+    return data.countries.firstWhere(
+        (country) => country.countryCode == countryCode[countryName]);
   }
 }

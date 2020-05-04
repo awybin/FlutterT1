@@ -16,6 +16,7 @@ class _GraphsViewState extends State<GraphsView> {
   String selectedCountry = 'United States of America';
   int selectedIndex = 0;
   Map<String, String> countriesCodeList;
+  bool isGlobal = false;
 
   _updateSelected(index) {
     selectedIndex = index;
@@ -52,39 +53,49 @@ class _GraphsViewState extends State<GraphsView> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10.0),
                       width: MediaQuery.of(context).size.width,
-                      child: FlatButton(
-                        padding: EdgeInsets.all(10.0),
-                        disabledColor: Colors.blueAccent,
-                        child: Text(
-                          selectedCountry,
-                          style: TextStyle(fontSize: 18.0, color: Colors.white),
-                        ),
-                        color: Colors.blueAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(8.0),
-                        ),
-                        onPressed: () {
-                          showModalBottomSheet(
-                              isDismissible: true,
-                              context: context,
-                              builder: (BuildContext builder) {
-                                return CupertinoPicker(
-                                  scrollController: FixedExtentScrollController(
-                                      initialItem: selectedIndex),
-                                  magnification: 1,
-                                  itemExtent: 40,
-                                  children: <Widget>[
-                                    for (var country in countriesCodeList.keys)
-                                      Center(child: Text(country))
-                                  ],
-                                  onSelectedItemChanged: (index) {
-                                    setState(() {
-                                      _updateSelected(index);
-                                    });
-                                  },
-                                );
-                              });
+                      child: GestureDetector(
+                        onDoubleTap: () {
+                          setState(() {
+                            isGlobal = !isGlobal;
+                          });
                         },
+                        child: FlatButton(
+                          padding: EdgeInsets.all(10.0),
+                          disabledColor: Colors.blueAccent,
+                          child: Text(
+                            isGlobal ? 'Global' : selectedCountry,
+                            style:
+                                TextStyle(fontSize: 18.0, color: Colors.white),
+                          ),
+                          color: Colors.blueAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(8.0),
+                          ),
+                          onPressed: () {
+                            showModalBottomSheet(
+                                isDismissible: true,
+                                context: context,
+                                builder: (BuildContext builder) {
+                                  return CupertinoPicker(
+                                    scrollController:
+                                        FixedExtentScrollController(
+                                            initialItem: selectedIndex),
+                                    magnification: 1,
+                                    itemExtent: 40,
+                                    children: <Widget>[
+                                      for (var country
+                                          in countriesCodeList.keys)
+                                        Center(child: Text(country))
+                                    ],
+                                    onSelectedItemChanged: (index) {
+                                      setState(() {
+                                        _updateSelected(index);
+                                      });
+                                    },
+                                  );
+                                });
+                          },
+                        ),
                       ),
                     ),
                     Text(
@@ -98,8 +109,8 @@ class _GraphsViewState extends State<GraphsView> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             CountrySummary countryData =
-                                CoronaRepository.getSummaryFor(
-                                    snapshot.data, selectedCountry);
+                                CoronaRepository.getSummaryFor(snapshot.data,
+                                    isGlobal ? 'Global' : selectedCountry);
                             countriesCodeList = CoronaRepository.countryCode;
                             return Row(
                               children: <Widget>[

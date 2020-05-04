@@ -21,6 +21,14 @@ class CoronaRepository {
   }
 
   static CountrySummary getSummaryFor(CoronaSummary data, String countryName) {
+    if (countryName == 'Global') {
+      var globalData = CountrySummary();
+      globalData.totalConfirmed = data.global.totalConfirmed;
+      globalData.totalDeaths = data.global.totalDeaths;
+      globalData.totalRecovered = data.global.totalRecovered;
+
+      return globalData;
+    }
     setCountriesList(data);
     return data.countries.firstWhere(
         (country) => country.countryCode == countryCode[countryName]);

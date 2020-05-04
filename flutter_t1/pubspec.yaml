@@ -62,3 +62,14 @@ flutter:
       fonts:
         - asset: assets/fonts/Beattingvile.ttf
 
+#    - family: Quicksand
+#      fonts:
+#        - asset: assets/fonts/Quicksand_Light.ttf
+#          weight: 300
+#        - asset: assets/fonts/Quicksand_Book.ttf
+#        - asset: assets/fonts/Quicksand_Bold.ttf
+#          weight: 700
+
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand_VariableFontWeight.ttf

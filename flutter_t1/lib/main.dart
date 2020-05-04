@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_t1/color_palette.dart';
 import 'package:flutter_t1/graficos.dart';
 import 'package:flutter_t1/introducao.dart';
-import 'package:flutter_t1/pesquisa.dart';
+import 'package:flutter_t1/survey_view.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Coronations',
       home: IntroductionPage(),
     );
@@ -27,12 +28,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static final graphsView = GraphsView();
+  static final survey = Survey();
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    GraphsView(),
-    App(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    graphsView,
+    survey,
   ];
 
   void _onItemTapped(int index) {

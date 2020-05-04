@@ -9,5 +9,10 @@ class ColorPalette extends MaterialColor {
   static const secondaryRed = Color(0xFFD95643);
   static const backgroundRed = Color(0xFFFFAEAE);
 
+  static const surveyYellow = Color(0xFFE5C859);
+  static const surveyGreen = Color(0xFF54B270);
+  static const surveyRed = Color(0xFFFF725E);
+  static const surveyPurple = Color(0xFF9C67E7);
+
   ColorPalette(int primary, Map<int, Color> swatch) : super(primary, swatch);
 }

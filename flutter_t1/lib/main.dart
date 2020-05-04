@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Pesquisa'),
+            title: Text('Enquete'),
           ),
         ],
         currentIndex: _selectedIndex,

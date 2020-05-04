@@ -77,28 +77,36 @@ class SurveyQuestionView extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        currentQuestion.image,
-        Padding(
-          padding: const EdgeInsets.only(top: 5),
-          child: Text(
-            currentQuestion.question,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 25, fontFamily: 'Quicksand'),
-          ),
-        ),
-        Visibility(
-          visible: !currentQuestion.hasSubtitle,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Text(
-              currentQuestion.subtitle,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Quicksand',
-                  fontWeight: FontWeight.w700,
-                  color: Colors.grey[600]),
-            ),
+        Card(
+          elevation: 0,
+          color: Colors.transparent,
+          child: Column(
+            children: <Widget>[
+              currentQuestion.image,
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  currentQuestion.question,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
+                ),
+              ),
+              Visibility(
+                visible: !currentQuestion.hasSubtitle,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Text(
+                    currentQuestion.subtitle,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'Quicksand',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.grey[600]),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         Container(

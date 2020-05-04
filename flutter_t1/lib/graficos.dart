@@ -13,13 +13,20 @@ class GraphsView extends StatefulWidget {
 
 class _GraphsViewState extends State<GraphsView> {
   Future<CoronaSummary> summary;
-  String selectedCountry = 'Brasil';
-  List<String> countryList = CoronaRepository.countryCode.keys.toList();
+  String selectedCountry = 'United States of America';
+  int selectedIndex = 0;
+  Map<String, String> countriesCodeList;
+
+  _updateSelected(index) {
+    selectedIndex = index;
+    selectedCountry = countriesCodeList.keys.toList()[index];
+  }
 
   @override
   void initState() {
     super.initState();
     summary = CoronaRepository.fetchAlbum();
+    countriesCodeList = CoronaRepository.countryCode;
   }
 
   @override
@@ -62,15 +69,17 @@ class _GraphsViewState extends State<GraphsView> {
                               context: context,
                               builder: (BuildContext builder) {
                                 return CupertinoPicker(
+                                  scrollController: FixedExtentScrollController(
+                                      initialItem: selectedIndex),
                                   magnification: 1,
                                   itemExtent: 40,
                                   children: <Widget>[
-                                    for (var country in countryList)
+                                    for (var country in countriesCodeList.keys)
                                       Center(child: Text(country))
                                   ],
                                   onSelectedItemChanged: (index) {
                                     setState(() {
-                                      selectedCountry = countryList[index];
+                                      _updateSelected(index);
                                     });
                                   },
                                 );
@@ -91,14 +100,15 @@ class _GraphsViewState extends State<GraphsView> {
                             CountrySummary countryData =
                                 CoronaRepository.getSummaryFor(
                                     snapshot.data, selectedCountry);
+                            countriesCodeList = CoronaRepository.countryCode;
                             return Row(
                               children: <Widget>[
                                 CasesCounter(
+                                    type: 'confirmed',
+                                    cases: countryData.totalConfirmed),
+                                CasesCounter(
                                     type: 'recovered',
                                     cases: countryData.totalRecovered),
-                                CasesCounter(
-                                    type: 'active',
-                                    cases: countryData.totalConfirmed),
                                 CasesCounter(
                                     type: 'fatal',
                                     cases: countryData.totalDeaths),
@@ -130,7 +140,7 @@ class CasesCounter extends StatelessWidget {
   final int cases;
 
   final _typeColor = {
-    'active': 'YellowCorona.png',
+    'confirmed': 'YellowCorona.png',
     'recovered': 'GreenCorona.png',
     'fatal': 'RedCorona.png',
   };

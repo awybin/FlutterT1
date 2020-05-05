@@ -64,8 +64,7 @@ class _GraphsViewState extends State<GraphsView> {
                           disabledColor: Colors.blueAccent,
                           child: Text(
                             isGlobal ? 'Global' : selectedCountry,
-                            style:
-                                TextStyle(fontSize: 18.0, color: Colors.white),
+                            style: Theme.of(context).textTheme.button,
                           ),
                           color: Colors.blueAccent,
                           shape: RoundedRectangleBorder(
@@ -100,7 +99,6 @@ class _GraphsViewState extends State<GraphsView> {
                     ),
                     Text(
                       'Estatísticas',
-                      style: TextStyle(fontSize: 22),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15.0),
@@ -171,7 +169,6 @@ class CasesCounter extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
             fmt.format(this.cases),
-            style: TextStyle(fontSize: 18),
           ),
         ),
       ],

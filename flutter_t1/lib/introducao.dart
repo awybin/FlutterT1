@@ -6,7 +6,6 @@ class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
@@ -18,17 +17,13 @@ class IntroductionPage extends StatelessWidget {
               ),
               Text(
                 'fique em casa',
-                style: TextStyle(
-                    fontFamily: 'Beattingvile',
-                    fontSize: 70,
-                    color: Colors.blueAccent),
+                style: Theme.of(context).textTheme.headline,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
                 child: Text(
                   'Agora é a hora de ficar em casa e usar o tempo para evoluir, trabalhar o seu interior e sair dessa fase uma pessoa melhor!',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
                 ),
               ),
               Container(
@@ -36,12 +31,11 @@ class IntroductionPage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 child: FlatButton(
                   padding: EdgeInsets.all(15.0),
-                  disabledColor: Colors.blueAccent,
                   child: Text(
                     'Show de bola!',
-                    style: TextStyle(fontSize: 18.0, color: Colors.white),
+                    style: Theme.of(context).textTheme.button,
                   ),
-                  color: Colors.blueAccent,
+                  color: Theme.of(context).buttonColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(8.0),
                   ),

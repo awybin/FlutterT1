@@ -88,7 +88,7 @@ class SurveyQuestionView extends StatelessWidget {
                 child: Text(
                   currentQuestion.question,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
+                  style: Theme.of(context).textTheme.display3,
                 ),
               ),
               Visibility(
@@ -98,11 +98,7 @@ class SurveyQuestionView extends StatelessWidget {
                   child: Text(
                     currentQuestion.subtitle,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'Quicksand',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.grey[600]),
+                    style: Theme.of(context).textTheme.display4,
                   ),
                 ),
               ),
@@ -116,11 +112,7 @@ class SurveyQuestionView extends StatelessWidget {
             padding: EdgeInsets.all(15.0),
             child: Text(
               'Sim',
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.white,
-                fontFamily: 'Quicksand',
-              ),
+              style: Theme.of(context).textTheme.display2,
             ),
             color: currentQuestion.mainColor,
             shape: RoundedRectangleBorder(
@@ -139,8 +131,7 @@ class SurveyQuestionView extends StatelessWidget {
             disabledColor: Colors.grey,
             child: Text(
               'Não',
-              style: TextStyle(
-                  fontSize: 20.0, color: Colors.white, fontFamily: 'Quicksand'),
+              style: Theme.of(context).textTheme.display2,
             ),
             color: Colors.grey,
             shape: RoundedRectangleBorder(

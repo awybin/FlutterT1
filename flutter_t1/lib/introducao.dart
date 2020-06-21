@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'localizations.dart';
 import 'main.dart';
 
 class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
       body: Center(
         child: Padding(
@@ -16,7 +19,7 @@ class IntroductionPage extends StatelessWidget {
                 image: AssetImage('assets/images/creativity.gif'),
               ),
               Text(
-                'fique em casa',
+                AppLocalizations.of(context).translate('fiqueEmCasa'),
                 style: Theme.of(context).textTheme.headline,
               ),
               Padding(
@@ -43,7 +46,24 @@ class IntroductionPage extends StatelessWidget {
                     Navigator.of(context).pushReplacement(_createRoute());
                   },
                 ),
-              )
+              ),
+              Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () {
+                    appLanguage.changeLanguage(Locale("en"));
+                  },
+                  child: Text('English'),
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    appLanguage.changeLanguage(Locale("pt"));
+                  },
+                  child: Text('Português'),
+                )
+              ],
+            )
             ],
           ),
         ),

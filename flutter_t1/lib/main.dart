@@ -1,19 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_t1/color_palette.dart';
 import 'package:flutter_t1/graficos.dart';
 import 'package:flutter_t1/introducao.dart';
 import 'package:flutter_t1/survey_view.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_t1/localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  
+  final AppLanguage appLanguage;
+
+  MyApp({this.appLanguage});
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Coronations',
-      home: IntroductionPage(),
+    return ChangeNotifierProvider<AppLanguage>(
+      builder: (_) => appLanguage,
+      child: Consumer<AppLanguage>(builder: (context, model, child) {
+        return MaterialApp(
+          //locale: model.appLocal,
+          supportedLocales: [
+            Locale('pt', ''),
+            Locale('en', 'US'),
+          ],
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
       theme: new ThemeData(
         primarySwatch: Colors.blueAccent[300],
         primaryColor: Colors.blueAccent[300],
@@ -55,7 +74,9 @@ class MyApp extends StatelessWidget {
 
         )
       ),
-    );
+        home: IntroductionPage(),
+        );
+      }));
   }
 }
 
@@ -103,5 +124,39 @@ class _HomePageState extends State<HomePage> {
         onTap: _onItemTapped,
       ),
     );
+  }
+}
+
+
+class AppLanguage extends ChangeNotifier {
+  Locale _appLocale = Locale('pt');
+
+  Locale get appLocal => _appLocale ?? Locale("pt");
+  fetchLocale() async {
+    var prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('language_code') == null) {
+      _appLocale = Locale('pt');
+      return Null;
+    }
+    _appLocale = Locale(prefs.getString('language_code'));
+    return Null;
+  }
+
+
+  void changeLanguage(Locale type) async {
+    var prefs = await SharedPreferences.getInstance();
+    if (_appLocale == type) {
+      return;
+    }
+    if (type == Locale("pt")) {
+      _appLocale = Locale("pt");
+      await prefs.setString('language_code', 'pt');
+      await prefs.setString('countryCode', '');
+    } else {
+      _appLocale = Locale("en");
+      await prefs.setString('language_code', 'en');
+      await prefs.setString('countryCode', 'US');
+    }
+    notifyListeners();
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_t1/repository/corona_repository.dart';
 import 'package:intl/intl.dart';
 
 import 'color_palette.dart';
+import 'localizations.dart';
 
 class GraphsView extends StatefulWidget {
   @override
@@ -98,7 +99,7 @@ class _GraphsViewState extends State<GraphsView> {
                       ),
                     ),
                     Text(
-                      'Estatísticas',
+                      AppLocalizations.of(context).translate('estatisticas'),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15.0),

@@ -109,14 +109,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: _widgetOptions),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.graphic_eq),
-            title: Text('Estatísticas'),
+            title: Text(AppLocalizations.of(context).translate('estatisticas')),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Enquete'),
+            title: Text(AppLocalizations.of(context).translate('enquete')),
           ),
         ],
         currentIndex: _selectedIndex,

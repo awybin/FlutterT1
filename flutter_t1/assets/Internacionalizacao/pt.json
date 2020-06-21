@@ -1,4 +1,20 @@
 
 {
-    "fiqueEmCasa" : "fique em casa"
+    "fiqueEmCasa" : "fique em casa",
+    "fraseIntroducao": "Agora é a hora de ficar em casa e usar o tempo para evoluir, trabalhar o seu interior e sair dessa fase uma pessoa melhor!",
+    "introducaoOK": "Show de bola!",
+    "estatisticas": "Estatísticas",    
+    "enquete": "Enquente",    
+    "pergunta1": "Você apresentou algum dos sintomas abaixo?",    
+    "subPergunta1": "Tosse, Febre, Dor de garganta, Coriza, Dores no corpo, Náusea, Falta de ar",    
+    "pergunta2": "Você teve contato com algum caso suspeito ou confirmado de COVID-19 nos últimos dias?",    
+    "pergunta3": "Você é um profissional da saúde?",    
+    "pergunta4": "Você continua fazendo suas atividades de casa?",
+    "sim": "Sim",    
+    "nao": "Não",    
+    "facaUmaEscolha": "Escolha uma opção",    
+    "galeria": "Galeria",    
+    "camera": "Câmera",    
+    "fotoPesquisaTexto": "Para completar a pesquisa retire uma foto do seu rosto.",    
+    "selecionarImagem": "Selecionar Imagem"
 }

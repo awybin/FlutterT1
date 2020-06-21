@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'localizations.dart';
 import 'main.dart';
@@ -7,7 +6,6 @@ import 'main.dart';
 class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appLanguage = Provider.of<AppLanguage>(context);
     return Scaffold(
       body: Center(
         child: Padding(
@@ -25,7 +23,7 @@ class IntroductionPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
                 child: Text(
-                  'Agora é a hora de ficar em casa e usar o tempo para evoluir, trabalhar o seu interior e sair dessa fase uma pessoa melhor!',
+                  AppLocalizations.of(context).translate('fraseIntroducao'),                  
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -35,7 +33,7 @@ class IntroductionPage extends StatelessWidget {
                 child: FlatButton(
                   padding: EdgeInsets.all(15.0),
                   child: Text(
-                    'Show de bola!',
+                    AppLocalizations.of(context).translate('introducaoOK'),
                     style: Theme.of(context).textTheme.button,
                   ),
                   color: Theme.of(context).buttonColor,
@@ -47,23 +45,6 @@ class IntroductionPage extends StatelessWidget {
                   },
                 ),
               ),
-              Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  onPressed: () {
-                    appLanguage.changeLanguage(Locale("en"));
-                  },
-                  child: Text('English'),
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    appLanguage.changeLanguage(Locale("pt"));
-                  },
-                  child: Text('Português'),
-                )
-              ],
-            )
             ],
           ),
         ),

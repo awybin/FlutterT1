@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_t1/color_palette.dart';
 import 'package:image_picker/image_picker.dart';
+import 'localizations.dart';
 
 class Survey extends StatefulWidget {
   @override
@@ -12,30 +13,14 @@ class Survey extends StatefulWidget {
 }
 
 class _SurveyState extends State<Survey> {
-  List<SurveyQuestion> questions = [
-    SurveyQuestion(
-      'Você apresentou algum dos sintomas abaixo?',
-      subtitle:
-          'Tosse, Febre, Dor de garganta, Coriza, Dores no corpo, Náusea, Falta de ar',
-      mainColor: ColorPalette.surveyYellow,
-      assetImage: 'FeverMeasurement.png',
-    ),
-    SurveyQuestion(
-      'Você teve contato com algum caso suspeito ou confirmado de COVID-19 nos últimos dias?',
-      mainColor: ColorPalette.surveyGreen,
-      assetImage: 'MeetingCouple.png',
-    ),
-    SurveyQuestion(
-      'Você é um profissional da saúde?',
-      mainColor: ColorPalette.surveyRed,
-      assetImage: 'HealthTeam.png',
-    ),
-    SurveyQuestion(
-      'Você continua fazendo suas atividades de casa?',
-      mainColor: ColorPalette.surveyPurple,
-      assetImage: 'WorkingGuy.png',
-    )
-  ];
+
+
+  List<SurveyQuestion> questions = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   List<bool> answers = [];
 
@@ -70,8 +55,39 @@ class _SurveyState extends State<Survey> {
     print(_currentIndex);
   }
 
+    void _inicializaQuestoes(BuildContext context) {
+          var listQuestions = [
+        SurveyQuestion(
+          AppLocalizations.of(context).translate('pergunta1'),
+          subtitle:
+            AppLocalizations.of(context).translate('subPergunta1'),
+          mainColor: ColorPalette.surveyYellow,
+          assetImage: 'FeverMeasurement.png',
+        ),
+        SurveyQuestion(
+          AppLocalizations.of(context).translate('pergunta2'),
+          mainColor: ColorPalette.surveyGreen,
+          assetImage: 'MeetingCouple.png',
+        ),
+        SurveyQuestion(
+          AppLocalizations.of(context).translate('pergunta3'),
+          mainColor: ColorPalette.surveyRed,
+          assetImage: 'HealthTeam.png',
+        ),
+        SurveyQuestion(
+          AppLocalizations.of(context).translate('pergunta4'),
+          mainColor: ColorPalette.surveyPurple,
+          assetImage: 'WorkingGuy.png',
+        )
+      ];
+      
+      if(questions.length < listQuestions.length)
+        questions.addAll(listQuestions);
+  }
+
   @override
   Widget build(BuildContext context) {
+    _inicializaQuestoes(context);
     return Scaffold(
       body: Container(
         margin: EdgeInsets.all(40.0),
@@ -126,7 +142,7 @@ class SurveyQuestionView extends StatelessWidget {
           child: FlatButton(
             padding: EdgeInsets.all(15.0),
             child: Text(
-              'Sim',
+              AppLocalizations.of(context).translate('sim'),
               style: Theme.of(context).textTheme.display2,
             ),
             color: currentQuestion.mainColor,
@@ -145,7 +161,7 @@ class SurveyQuestionView extends StatelessWidget {
             padding: EdgeInsets.all(15.0),
             disabledColor: Colors.grey,
             child: Text(
-              'Não',
+              AppLocalizations.of(context).translate('nao'),
               style: Theme.of(context).textTheme.display2,
             ),
             color: Colors.grey,
@@ -220,19 +236,25 @@ class PerguntaFotoState extends State<PerguntaFoto> {
   Future <void> _showChoiceDialog(BuildContext context){
     return showDialog(context: context, builder: (BuildContext context){
       return AlertDialog(
-        title: Text("Make a choice"),
+        title: Text(
+          AppLocalizations.of(context).translate('facaUmaEscolha'),
+        ),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               GestureDetector(
-                child: Text("Gallery"),
+                child: Text(
+                  AppLocalizations.of(context).translate('galeria'),
+                ),
                 onTap: (){
                   _openGallery(context);
                 },
               ),
               Padding(padding: EdgeInsets.all(8.0),),
               GestureDetector(
-                child: Text("Camera"),
+                child: Text(
+                  AppLocalizations.of(context).translate('camera'),
+                ),
                 onTap: (){
                   _openCamera(context);
                 },
@@ -246,10 +268,12 @@ class PerguntaFotoState extends State<PerguntaFoto> {
 
   Widget _decideImageView(){
     if(imageFile == null){
-      return Text("SelecionarImagem");
+      return Text(
+        AppLocalizations.of(context).translate('fotoPesquisaTexto'),
+      );
     }
     else{
-      Image.file(imageFile, width: 400, height: 400,);  
+      return Image.file(imageFile, width: 400, height: 400,);  
     }
   }
 
@@ -265,7 +289,9 @@ class PerguntaFotoState extends State<PerguntaFoto> {
                 onPressed: (){
                   _showChoiceDialog(context);
                 },
-                child: Text("Select Image"),
+                child: Text(
+                  AppLocalizations.of(context).translate('selecionarImagem'),
+                ),
               )
             ],
           ),

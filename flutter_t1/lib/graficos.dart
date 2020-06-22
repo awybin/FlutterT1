@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_t1/Model/corona_summary.dart';
 import 'package:flutter_t1/repository/corona_repository.dart';
+import 'package:flutter_t1/google_map.dart';
 import 'package:intl/intl.dart';
 
 import 'color_palette.dart';

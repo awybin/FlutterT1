@@ -1,3 +1,4 @@
+import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_t1/Model/corona_summary.dart';
@@ -102,7 +103,7 @@ class _GraphsViewState extends State<GraphsView> {
                       AppLocalizations.of(context).translate('estatisticas'),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: FutureBuilder<CoronaSummary>(
                         future: summary,
                         builder: (context, snapshot) {
@@ -111,19 +112,43 @@ class _GraphsViewState extends State<GraphsView> {
                                 CoronaRepository.getSummaryFor(snapshot.data,
                                     isGlobal ? 'Global' : selectedCountry);
                             countriesCodeList = CoronaRepository.countryCode;
-                            return Row(
-                              children: <Widget>[
-                                CasesCounter(
-                                    type: 'confirmed',
-                                    cases: countryData.totalConfirmed),
-                                CasesCounter(
-                                    type: 'recovered',
-                                    cases: countryData.totalRecovered),
-                                CasesCounter(
-                                    type: 'fatal',
-                                    cases: countryData.totalDeaths),
-                              ],
+                            return Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  children: <Widget>[
+                                    CasesCounter(
+                                        type: 'confirmed',
+                                        cases: countryData.totalConfirmed),
+                                    CasesCounter(
+                                        type: 'recovered',
+                                        cases: countryData.totalRecovered),
+                                    CasesCounter(
+                                        type: 'fatal',
+                                        cases: countryData.totalDeaths),
+                                  ],
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 25.0),
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 230,
+                                    child: Container(
+                                      child: PieChart(
+                                        _createSeriesFrom(snapshot.data),
+                                        animate: true,
+                                        defaultRenderer: ArcRendererConfig(
+                                            arcWidth: 60,
+                                            arcRendererDecorators: [
+                                              new ArcLabelDecorator()
+                                            ]),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             );
                           }
                           return CircularProgressIndicator();
@@ -144,22 +169,22 @@ class _GraphsViewState extends State<GraphsView> {
         ));
   }
 
-//  List<RadialBarSeries<CountrySummary, String>> getRadialBarDefaultSeries(
-//      CoronaSummary summary) {
-//    return <RadialBarSeries<CountrySummary, String>>[
-//      RadialBarSeries<CountrySummary, String>(
-//        maximumValue: 15,
-//        dataLabelSettings: DataLabelSettings(
-//            isVisible: true, textStyle: ChartTextStyle(fontSize: 10.0)),
-//        dataSource: summary.countries.getRange(0, 4),
-//        cornerStyle: CornerStyle.bothCurve,
-//        gap: '10%',
-//        radius: '90%',
-//        xValueMapper: (CountrySummary data, _) => data.country,
-//        yValueMapper: (CountrySummary data, _) => data.totalConfirmed,
-//      )
-//    ];
-//  }
+  List<Series<CountrySummary, String>> _createSeriesFrom(CoronaSummary data) {
+    var fmt = NumberFormat.compact(locale: 'pt-br');
+    var top10 = data.countries.getRange(0, 10).toList(growable: false);
+    top10.shuffle();
+    return [
+      new Series<CountrySummary, String>(
+        id: 'Top 10',
+        domainFn: (CountrySummary country, _) =>
+            country.countryCode.toUpperCase(),
+        measureFn: (CountrySummary country, _) => country.totalConfirmed,
+        data: top10,
+        labelAccessorFn: (CountrySummary country, _) =>
+            '${country.countryCode.toUpperCase()} - ${fmt.format(country.totalConfirmed / data.global.totalConfirmed * 100)} %',
+      )
+    ];
+  }
 }
 
 class CasesCounter extends StatelessWidget {

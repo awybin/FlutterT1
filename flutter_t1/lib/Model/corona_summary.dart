@@ -1,3 +1,5 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class CoronaSummary {
   GlobalSummary global;
   List<CountrySummary> countries;
@@ -68,6 +70,7 @@ class GlobalSummary {
 class CountrySummary {
   String country;
   String countryCode;
+  LatLng latlng;
   String slug;
   int newConfirmed;
   int totalConfirmed;
@@ -114,6 +117,77 @@ class CountrySummary {
     data['NewRecovered'] = this.newRecovered;
     data['TotalRecovered'] = this.totalRecovered;
     data['Date'] = this.date;
+    return data;
+  }
+}
+
+class CountryData {
+  int code;
+  List<Data> data;
+
+  CountryData({this.code, this.data});
+
+  CountryData.fromJson(Map<String, dynamic> json) {
+    code = json['code'];
+    if (json['data'] != null) {
+      data = new List<Data>();
+      json['data'].forEach((v) {
+        data.add(new Data.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['code'] = this.code;
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Data {
+  String location;
+  String countryCode;
+  double latitude;
+  double longitude;
+  int confirmed;
+  int dead;
+  int recovered;
+  String updated;
+
+  Data(
+      {this.location,
+      this.countryCode,
+      this.latitude,
+      this.longitude,
+      this.confirmed,
+      this.dead,
+      this.recovered,
+      this.updated});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    location = json['location'];
+    countryCode = json['country_code'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    confirmed = json['confirmed'];
+    dead = json['dead'];
+    recovered = json['recovered'];
+    updated = json['updated'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['location'] = this.location;
+    data['country_code'] = this.countryCode;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['confirmed'] = this.confirmed;
+    data['dead'] = this.dead;
+    data['recovered'] = this.recovered;
+    data['updated'] = this.updated;
     return data;
   }
 }

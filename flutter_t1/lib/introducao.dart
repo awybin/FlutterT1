@@ -14,7 +14,7 @@ class IntroductionPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image(
-                image: AssetImage('assets/images/creativity.gif'),
+                image: AssetImage('assets/images/creativityGuy.png'),
               ),
               Text(
                 AppLocalizations.of(context).translate('fiqueEmCasa'),
@@ -23,7 +23,7 @@ class IntroductionPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
                 child: Text(
-                  AppLocalizations.of(context).translate('fraseIntroducao'),                  
+                  AppLocalizations.of(context).translate('fraseIntroducao'),
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_t1/Model/corona_summary.dart';
 import 'package:flutter_t1/repository/corona_repository.dart';
-import 'package:flutter_t1/google_map.dart';
 import 'package:intl/intl.dart';
 
 import 'color_palette.dart';
@@ -15,7 +14,7 @@ class GraphsView extends StatefulWidget {
 
 class _GraphsViewState extends State<GraphsView> {
   Future<CoronaSummary> summary;
-  String selectedCountry = 'United States of America';
+  String selectedCountry = 'United States';
   int selectedIndex = 0;
   Map<String, String> countriesCodeList;
   bool isGlobal = false;
@@ -130,7 +129,7 @@ class _GraphsViewState extends State<GraphsView> {
                           return CircularProgressIndicator();
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -144,6 +143,23 @@ class _GraphsViewState extends State<GraphsView> {
           ],
         ));
   }
+
+//  List<RadialBarSeries<CountrySummary, String>> getRadialBarDefaultSeries(
+//      CoronaSummary summary) {
+//    return <RadialBarSeries<CountrySummary, String>>[
+//      RadialBarSeries<CountrySummary, String>(
+//        maximumValue: 15,
+//        dataLabelSettings: DataLabelSettings(
+//            isVisible: true, textStyle: ChartTextStyle(fontSize: 10.0)),
+//        dataSource: summary.countries.getRange(0, 4),
+//        cornerStyle: CornerStyle.bothCurve,
+//        gap: '10%',
+//        radius: '90%',
+//        xValueMapper: (CountrySummary data, _) => data.country,
+//        yValueMapper: (CountrySummary data, _) => data.totalConfirmed,
+//      )
+//    ];
+//  }
 }
 
 class CasesCounter extends StatelessWidget {

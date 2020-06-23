@@ -5,16 +5,17 @@ import 'package:flutter_t1/graficos.dart';
 import 'package:flutter_t1/introducao.dart';
 import 'package:flutter_t1/localizations.dart';
 import 'package:flutter_t1/survey_view.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
   final AppLanguage appLanguage;
 
   MyApp({this.appLanguage});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
           );
         }));
   }
+  
 }
 
 class HomePage extends StatefulWidget {
@@ -98,10 +100,37 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  
+  static const platform = const MethodChannel('samples.flutter.dev/battery');
+
+  String _batteryLevel = 'Unknown battery level.';
+
+  Future<void> _getBatteryLevel() async {
+    String batteryLevel;
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level at $result % .';
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    setState(() {
+      _batteryLevel = batteryLevel;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _getBatteryLevel();
     return Scaffold(
-      body: IndexedStack(index: _selectedIndex, children: _widgetOptions),
+      body: Column(
+        children: <Widget>[
+          Text(_batteryLevel),
+          Expanded(
+            child: IndexedStack(index: _selectedIndex, children: _widgetOptions),
+          )
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -124,6 +153,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
 
 class AppLanguage extends ChangeNotifier {
   Locale _appLocale = Locale('pt');

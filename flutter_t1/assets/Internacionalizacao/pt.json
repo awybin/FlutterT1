@@ -17,5 +17,7 @@
     "camera": "Câmera",    
     "fotoPesquisaTexto": "Para completar a pesquisa retire uma foto do seu rosto.",    
     "selecionarImagem": "Selecionar Imagem",
-    "mapa": "Mapa"
+    "mapa": "Mapa",    
+    "nivelBateria": "Nível de bateria em  ",
+    "falhaBateria": "Falha ao obter nível de bateria: "
 }

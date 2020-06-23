@@ -103,15 +103,15 @@ class _HomePageState extends State<HomePage> {
   
   static const platform = const MethodChannel('samples.flutter.dev/battery');
 
-  String _batteryLevel = 'Unknown battery level.';
+  String _batteryLevel = '';
 
   Future<void> _getBatteryLevel() async {
     String batteryLevel;
     try {
       final int result = await platform.invokeMethod('getBatteryLevel');
-      batteryLevel = 'Battery level at $result % .';
+      batteryLevel = AppLocalizations.of(context).translate('nivelBateria') + "$result % .";
     } on PlatformException catch (e) {
-      batteryLevel = "Failed to get battery level: '${e.message}'.";
+      batteryLevel = AppLocalizations.of(context).translate('falhaBateria') + "${e.message}.";
     }
 
     setState(() {

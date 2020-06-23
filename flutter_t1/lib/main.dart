@@ -1,82 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_t1/google_map.dart';
 import 'package:flutter_t1/graficos.dart';
 import 'package:flutter_t1/introducao.dart';
-import 'package:flutter_t1/survey_view.dart';
-
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_t1/localizations.dart';
+import 'package:flutter_t1/survey_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  
   final AppLanguage appLanguage;
 
   MyApp({this.appLanguage});
-  
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AppLanguage>(
-      builder: (_) => appLanguage,
-      child: Consumer<AppLanguage>(builder: (context, model, child) {
-        return MaterialApp(
-          //locale: model.appLocal,
-          supportedLocales: [
-            Locale('pt', ''),
-            Locale('en', 'US'),
-          ],
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-      theme: new ThemeData(
-        primarySwatch: Colors.blueAccent[300],
-        primaryColor: Colors.blueAccent[300],
-        buttonColor: Colors.blueAccent,
-        backgroundColor: Colors.white,
-        textTheme: new TextTheme(
-          headline: TextStyle(
-            fontFamily: 'Beattingvile',
-            fontSize: 70,
-            color: Colors.blueAccent
-          ),
-          button: TextStyle(
-            fontSize: 18,
-            color: Colors.white
-          ),
-          display1: TextStyle(
-            fontSize: 15,
-          ),
-          display2: TextStyle(
-            fontSize: 20.0, 
-            color: Colors.white, 
-            fontFamily: 'Quicksand',
-            fontWeight: FontWeight.w700,
-          ),
-          display3: TextStyle(
-            fontSize: 22, 
-            color: Colors.black, 
-            fontFamily: 'Quicksand',
-            fontWeight: FontWeight.w700,
-          ),
-          display4: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Quicksand',
-            fontWeight: FontWeight.w700,
-            color: Colors.grey[600]
-          ),
-          body1: new TextStyle(fontSize: 18),
-          body2: new TextStyle(color: Colors.red),
-
-        )
-      ),
-        home: IntroductionPage(),
-        );
-      }));
+        builder: (_) => appLanguage,
+        child: Consumer<AppLanguage>(builder: (context, model, child) {
+          return MaterialApp(
+            //locale: model.appLocal,
+            supportedLocales: [
+              Locale('pt', ''),
+              Locale('en', 'US'),
+            ],
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            theme: new ThemeData(
+                primarySwatch: Colors.blueAccent[300],
+                primaryColor: Colors.blueAccent[300],
+                buttonColor: Colors.blueAccent,
+                backgroundColor: Colors.white,
+                textTheme: new TextTheme(
+                  headline: TextStyle(
+                      fontFamily: 'Beattingvile',
+                      fontSize: 70,
+                      color: Colors.blueAccent),
+                  button: TextStyle(fontSize: 18, color: Colors.white),
+                  display1: TextStyle(
+                    fontSize: 15,
+                  ),
+                  display2: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                    fontFamily: 'Quicksand',
+                    fontWeight: FontWeight.w700,
+                  ),
+                  display3: TextStyle(
+                    fontSize: 22,
+                    color: Colors.black,
+                    fontFamily: 'Quicksand',
+                    fontWeight: FontWeight.w700,
+                  ),
+                  display4: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'Quicksand',
+                      fontWeight: FontWeight.w700,
+                      color: Colors.grey[600]),
+                  body1: new TextStyle(fontSize: 18),
+                  body2: new TextStyle(color: Colors.red),
+                )),
+            home: IntroductionPage(),
+          );
+        }));
   }
 }
 
@@ -92,10 +84,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   static final graphsView = GraphsView();
   static final survey = Survey();
+  static final mapView = MapView();
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     graphsView,
     survey,
+    mapView,
   ];
 
   void _onItemTapped(int index) {
@@ -118,6 +112,10 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.search),
             title: Text(AppLocalizations.of(context).translate('enquete')),
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            title: Text(AppLocalizations.of(context).translate('mapa')),
+          ),
         ],
         currentIndex: _selectedIndex,
         //selectedItemColor: ColorPalette.secondaryBlue,
@@ -126,7 +124,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
 
 class AppLanguage extends ChangeNotifier {
   Locale _appLocale = Locale('pt');
@@ -141,7 +138,6 @@ class AppLanguage extends ChangeNotifier {
     _appLocale = Locale(prefs.getString('language_code'));
     return Null;
   }
-
 
   void changeLanguage(Locale type) async {
     var prefs = await SharedPreferences.getInstance();
